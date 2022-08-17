@@ -9,6 +9,24 @@ pipeline {
                 git branch: 'main', credentialsId: 'local-exec', url: 'https://github.com/TheCountt/microservice-demo-app.git'
             }
         }
+
+
+        stage('SonarQube Quality Gate') {
+            when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
+                environment {
+                    scannerHome = tool 'SonarQubeScanner'
+                }
+                steps {
+                    withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
+                        sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
+                }
+                        timeout(time: 3, unit: 'MINUTES') {
+                            waitForQualityGate abortPipeline: true
+               }
+            }
+         }
+
+
         stage('terraform format check') {
             steps{
                 sh 'terraform fmt'
