@@ -50,7 +50,7 @@ pipeline {
                     currentBuild.displayName = params.version
                 }
                     sh 'terraform init'
-                    sh "terraform plan -out tfplan --var-file=${params.variables}.tfvars"
+                    sh "terraform plan -out tfplan --var-file=${params.variables}"
                     sh "terraform show -no-color tfplan > tfplan.txt"
             }
         }
