@@ -9,7 +9,17 @@ pipeline {
   buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '4')
   }
   
+   parameters {
+        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
+    }
+    
+    environment {
+        ACCESS_KEY_ID     = credentials('ACCESS_KEY_ID')
+        SECRET_ACCESS_KEY = credentials('SECRET_ACCESS_KEY')
+    }
+
     stages {
+
         stage('Git checkout') {
            steps{
                 git branch: 'main', credentialsId: 'local-exec', url: 'https://github.com/TheCountt/microservice-demo-app.git'
@@ -33,23 +43,34 @@ pipeline {
          }
 
 
-        stage('terraform format check') {
-            steps{
-                sh 'terraform fmt'
-            }
-        }
-        stage('Intitialize terraform') {
-            steps{
-                sh 'terraform init'
+        stage('Plan') {
+            steps {
+                script {
+                    currentBuild.displayName = params.version
+                }
+                    sh 'terraform init'
+                    sh "terraform plan -out tfplan"
+                    sh "terraform show -no-color tfplan > tfplan.txt"
             }
         }
 
-        stage('terraform plan') {
-            steps{
-                sh 'terraform plan'
-            }
-        }
-    }
 
-    
+        // stage('Approval') {
+        //     when {
+        //         not {
+        //             equals expected: true, actual: params.autoApprove
+        //         }
+        //     }
+
+        //     steps {
+        //         script {
+        //             def plan = readFile 'tfplan.txt'
+        //             input message: "Do you want to apply the plan?",
+        //                 parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+        //         }
+        //     }
+        // }
+
+        
+
 }
