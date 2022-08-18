@@ -19,7 +19,7 @@ resource "aws_s3_bucket" "k8s-terraform_state" {
 
 
 resource "aws_s3_bucket_public_access_block" "example-public-access-block" {
-  bucket = aws_s3_bucket.example.id
+  bucket = "k8s-terraform-bucket"
 
   block_public_acls       = true
   block_public_policy     = true
