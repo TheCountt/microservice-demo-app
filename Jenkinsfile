@@ -10,6 +10,7 @@ pipeline {
   }
   
    parameters {
+        string(name: 'variables', defaultValue: 'terraform.auto.tfvars', description: 'variables file to use for deployment')
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
     
@@ -49,7 +50,7 @@ pipeline {
                     currentBuild.displayName = params.version
                 }
                     sh 'terraform init'
-                    sh "terraform plan -out tfplan"
+                    sh "terraform plan -out tfplan --var-file=${params.environment}.tfvars"
                     sh "terraform show -no-color tfplan > tfplan.txt"
             }
         }
