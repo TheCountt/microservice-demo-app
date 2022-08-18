@@ -37,11 +37,12 @@ pipeline {
                 sh 'terraform init'
             }
         }
-        // stage('terraform apply') {
-        //     steps{
-        //         sh 'terraform apply --auto-approve'
-        //     }
-        // }
+        
+        stage('terraform plan') {
+            steps{
+                sh 'terraform plan'
+            }
+        }
     }
 
     
