@@ -3,6 +3,12 @@ pipeline {
     tools {
        terraform 'terraform'
     }
+
+      options {
+  timestamps ()
+  buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '4')
+  }
+  
     stages {
         stage('Git checkout') {
            steps{
@@ -37,7 +43,7 @@ pipeline {
                 sh 'terraform init'
             }
         }
-        
+
         stage('terraform plan') {
             steps{
                 sh 'terraform plan'
