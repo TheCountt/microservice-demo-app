@@ -32,7 +32,7 @@ pipeline {
                 sh 'terraform fmt'
             }
         }
-        stage('terraform Init') {
+        stage('Intitialize terraform') {
             steps{
                 sh 'terraform init'
             }
