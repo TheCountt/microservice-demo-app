@@ -10,10 +10,10 @@ pipeline {
         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '4')
     }
 
-    parameters {
-        string(name: 'variables', defaultValue: 'terraform.auto.tfvars', description: 'variables file to use for deployment')
-        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
-    }
+    // parameters {
+    //     string(name: 'variables', defaultValue: 'terraform.auto.tfvars', description: 'variables file to use for deployment')
+    //     booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
+    // }
 
     stages {
         stage('Git checkout') {
@@ -37,16 +37,16 @@ pipeline {
         //         }
         // }
 
-        // stage('Terraform init & Dry Run') {
-        //     steps {
-        //         script {
-        //             currentBuild.displayName = params.version
-        //         }
-        //             sh 'terraform init'
-        //             sh "terraform plan -out tfplan --var-file=${params.variables}"
-        //             sh 'terraform show -no-color tfplan > tfplan.txt'
-        //     }
-        // }
+        stage('Terraform init & Dry Run') {
+            steps {
+                script {
+                    currentBuild.displayName = params.version
+                }
+                    sh 'terraform init'
+                    // sh "terraform plan -out tfplan --var-file=${params.variables}"
+                    // sh 'terraform show -no-color tfplan > tfplan.txt'
+            }
+        }
 
         // stage('Approval') {
         //     when {
