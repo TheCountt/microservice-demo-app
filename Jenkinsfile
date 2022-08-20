@@ -10,7 +10,7 @@ pipeline {
   }
   
    parameters {
-        string(name: 'terraform.tfvars', defaultValue: 'variables.tf', description: 'variables file to use for deployment')
+        string(name: 'variables.tf', defaultValue: 'terraform.tfvars', description: 'variables file to use for deployment')
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
     
