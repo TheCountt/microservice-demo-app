@@ -1,4 +1,4 @@
-/* groovylint-disable GStringExpressionWithinString */
+/* groovylint-disable GStringExpressionWithinString, NestedBlockDepth */
 pipeline {
     agent any
     tools {
@@ -74,5 +74,10 @@ pipeline {
                 }
             }
         }
+
+        stage('Destroy')
+            steps {
+                sh 'terraform destroy -auto-approve'
+            }
     }
 }
