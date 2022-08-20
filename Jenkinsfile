@@ -23,23 +23,23 @@ pipeline {
         }
 
 
-        // stage('SonarQube Quality Gate') {
-        //     when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
-        //         environment {
-        //             scannerHome = tool 'SonarQubeScanner'
-        //         }
-        //         steps {
-        //             withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
-        //                 sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
-        //         }
-        //                 timeout(time: 5, unit: 'MINUTES') {
-        //                     waitForQualityGate abortPipeline: true
-        //        }
-        //     }
-        //  }
+        stage('SonarQube Quality Gate') {
+            when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
+                environment {
+                    scannerHome = tool 'SonarQubeScanner'
+                }
+                steps {
+                    withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
+                        sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
+                }
+                        timeout(time: 3, unit: 'MINUTES') {
+                            waitForQualityGate abortPipeline: true
+               }
+            }
+         }
 
 
-        stage('Plan') {
+        stage('Terraform init & Dry Run') {
             steps {
                 script {
                     currentBuild.displayName = params.version
@@ -51,21 +51,21 @@ pipeline {
         }
 
 
-        // stage('Approval') {
-        //     when {
-        //         not {
-        //             equals expected: true, actual: params.autoApprove
-        //         }
-        //     }
+        stage('Approval') {
+            when {
+                not {
+                    equals expected: true, actual: params.autoApprove
+                }
+            }
 
-        //     steps {
-        //         script {
-        //             def plan = readFile 'tfplan.txt'
-        //             input message: "Do you want to apply the plan?",
-        //                 parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-        //         }
-        //     }
-        // }
+            steps {
+                script {
+                    def plan = readFile 'tfplan.txt'
+                    input message: "Do you want to apply the plan?",
+                        parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+                }
+            }
+        }
 
     }    
 
