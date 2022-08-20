@@ -10,7 +10,7 @@ pipeline {
   }
   
    parameters {
-        string(name: 'variables', defaultValue: 'variables.tf', description: 'variables file to use for deployment')
+        // string(name: 'variables', defaultValue: 'variables.tf', description: 'variables file to use for deployment')
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
     
@@ -28,20 +28,20 @@ pipeline {
         }
 
 
-        stage('SonarQube Quality Gate') {
-            when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
-                environment {
-                    scannerHome = tool 'SonarQubeScanner'
-                }
-                steps {
-                    withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
-                        sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
-                }
-                        timeout(time: 5, unit: 'MINUTES') {
-                            waitForQualityGate abortPipeline: true
-               }
-            }
-         }
+        // stage('SonarQube Quality Gate') {
+        //     when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
+        //         environment {
+        //             scannerHome = tool 'SonarQubeScanner'
+        //         }
+        //         steps {
+        //             withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
+        //                 sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
+        //         }
+        //                 timeout(time: 5, unit: 'MINUTES') {
+        //                     waitForQualityGate abortPipeline: true
+        //        }
+        //     }
+        //  }
 
 
         stage('Plan') {
@@ -50,7 +50,7 @@ pipeline {
                     currentBuild.displayName = params.version
                 }
                     sh 'terraform init'
-                    sh "terraform plan -out tfplan --var-file=${params.variables}"
+                    sh "terraform plan -out tfplan --var-file='terraform.auto.tfvars'"
                     sh "terraform show -no-color tfplan > tfplan.txt"
             }
         }
