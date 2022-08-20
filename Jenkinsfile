@@ -22,58 +22,58 @@ pipeline {
             }
         }
 
-        stage('SonarQube Quality Gate') {
-            when { branch pattern: '^main*|^isaac*', comparator: 'REGEXP' }
-                environment {
-                    scannerHome = tool 'SonarQubeScanner'
-                }
-                steps {
-                    withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
-                        sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
-                    }
-                        timeout(time: 3, unit: 'MINUTES') {
-                            waitForQualityGate abortPipeline: true
-                        }
-                }
-        }
+        // stage('SonarQube Quality Gate') {
+        //     when { branch pattern: '^main*|^isaac*', comparator: 'REGEXP' }
+        //         environment {
+        //             scannerHome = tool 'SonarQubeScanner'
+        //         }
+        //         steps {
+        //             withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
+        //                 sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
+        //             }
+        //                 timeout(time: 3, unit: 'MINUTES') {
+        //                     waitForQualityGate abortPipeline: true
+        //                 }
+        //         }
+        // }
 
-        stage('Terraform init & Dry Run') {
-            steps {
-                script {
-                    currentBuild.displayName = params.version
-                }
-                    sh 'terraform init'
-                    sh "terraform plan -out tfplan --var-file=${params.variables}"
-                    sh 'terraform show -no-color tfplan > tfplan.txt'
-            }
-        }
+        // stage('Terraform init & Dry Run') {
+        //     steps {
+        //         script {
+        //             currentBuild.displayName = params.version
+        //         }
+        //             sh 'terraform init'
+        //             sh "terraform plan -out tfplan --var-file=${params.variables}"
+        //             sh 'terraform show -no-color tfplan > tfplan.txt'
+        //     }
+        // }
 
-        stage('Approval') {
-            when {
-                not {
-                    equals expected: true, actual: params.autoApprove
-                }
-            }
+        // stage('Approval') {
+        //     when {
+        //         not {
+        //             equals expected: true, actual: params.autoApprove
+        //         }
+        //     }
 
-            steps {
-                script {
-                    def plan = readFile 'tfplan.txt'
-                    input message: 'Do you want to apply the plan?',
-                        parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-                }
-            }
-        }
+        //     steps {
+        //         script {
+        //             def plan = readFile 'tfplan.txt'
+        //             input message: 'Do you want to apply the plan?',
+        //                 parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+        //         }
+        //     }
+        // }
 
-        stage('Apply') {
-            steps {
-                sh 'terraform apply -input=false tfplan'
-                post {
-                    always {
-                        archiveArtifacts artifacts: 'tfplan.txt'
-                    }
-                }
-            }
-        }
+        // stage('Apply') {
+        //     steps {
+        //         sh 'terraform apply -input=false tfplan'
+        //         post {
+        //             always {
+        //                 archiveArtifacts artifacts: 'tfplan.txt'
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Destroy') {
             steps {
