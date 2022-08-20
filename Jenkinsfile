@@ -1,43 +1,41 @@
+/* groovylint-disable GStringExpressionWithinString */
 pipeline {
     agent any
     tools {
-       terraform 'terraform'
+        terraform 'terraform'
     }
 
-      options {
-  timestamps ()
-  buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '4')
-  }
-  
-   parameters {
+    options {
+        timestamps()
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '4')
+    }
+
+    parameters {
         string(name: 'variables', defaultValue: 'terraform.auto.tfvars', description: 'variables file to use for deployment')
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
-    
-    stages {
 
+    stages {
         stage('Git checkout') {
-           steps{
+            steps {
                 git branch: 'main', credentialsId: 'local-exec', url: 'https://github.com/TheCountt/microservice-demo-app.git'
             }
         }
 
-
         stage('SonarQube Quality Gate') {
-            when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
+            when { branch pattern: '^main*|^isaac*', comparator: 'REGEXP' }
                 environment {
                     scannerHome = tool 'SonarQubeScanner'
                 }
                 steps {
                     withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
                         sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
-                }
+                    }
                         timeout(time: 3, unit: 'MINUTES') {
                             waitForQualityGate abortPipeline: true
-               }
-            }
-         }
-
+                        }
+                }
+        }
 
         stage('Terraform init & Dry Run') {
             steps {
@@ -46,27 +44,36 @@ pipeline {
                 }
                     sh 'terraform init'
                     sh "terraform plan -out tfplan --var-file=${params.variables}"
-                    sh "terraform show -no-color tfplan > tfplan.txt"
+                    sh 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
-
 
         stage('Approval') {
             when {
                 not {
-                    equals expected: true, actual: params.autoApprove
+                    (this == ([expected:true, actual:params.autoApprove]))
                 }
             }
 
             steps {
                 script {
                     def plan = readFile 'tfplan.txt'
-                    input message: "Do you want to apply the plan?",
+                    input message: 'Do you want to apply the plan?',
                         parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                 }
             }
         }
 
-    }    
+        stage('Apply') {
+            steps {
+                sh 'terraform apply -input=false tfplan'
+            }
+        }
 
+        post {
+            always {
+                archiveArtifacts artifacts: 'tfplan.txt'
+            }
+        }
+    }
 }
