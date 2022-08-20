@@ -51,7 +51,7 @@ pipeline {
         stage('Approval') {
             when {
                 not {
-                    (this == ([expected:true, actual:params.autoApprove]))
+                    equals expected: true, actual: params.autoApprove
                 }
             }
 
@@ -67,12 +67,11 @@ pipeline {
         stage('Apply') {
             steps {
                 sh 'terraform apply -input=false tfplan'
-            }
-        }
-
-        post {
-            always {
-                archiveArtifacts artifacts: 'tfplan.txt'
+                post {
+                    always {
+                        archiveArtifacts artifacts: 'tfplan.txt'
+                    }
+                }
             }
         }
     }
