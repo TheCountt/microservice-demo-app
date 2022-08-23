@@ -5,7 +5,7 @@ resource "aws_s3_bucket" "k8s-terraform_state" {
   
   versioning {
     enabled = true
-    mfa_delete = true
+    mfa_delete = false
   }
 
   server_side_encryption_configuration {

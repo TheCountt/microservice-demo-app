@@ -1,4 +1,4 @@
-region                  = "us-west-2"
+region                  = "us-west-1"
 cluster_name            = "mern-app-eks"
 iac_environment_tag     = "development"
 name_prefix             = "isaac-eks"
