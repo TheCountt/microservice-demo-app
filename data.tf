@@ -1,4 +1,4 @@
-# get all available AZs in our region
+/* # get all available AZs in our region
 data "aws_availability_zones" "available_azs" {
   state = "available"
 }
@@ -14,4 +14,4 @@ data "aws_eks_cluster" "cluster" {
 }
 data "aws_eks_cluster_auth" "cluster" {
   name = module.eks_cluster.cluster_id
-}
+} */
