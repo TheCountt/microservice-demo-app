@@ -70,11 +70,15 @@ pipeline {
             }
         }
 
-        post {
+        stage('Post') {
+            steps {
+                post {
                     always {
                         archiveArtifacts artifacts: 'tfplan.txt'
                     }
                 }
+            }
+        }
 
         stage('Destroy') {
             steps {
