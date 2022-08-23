@@ -22,20 +22,20 @@ pipeline {
             }
         }
 
-        stage('SonarQube Quality Gate') {
-            when { branch pattern: '^main*|^isaac*', comparator: 'REGEXP' }
-                environment {
-                    scannerHome = tool 'SonarQubeScanner'
-                }
-                steps {
-                    withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
-                        sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
-                    }
-                        timeout(time: 3, unit: 'MINUTES') {
-                            waitForQualityGate abortPipeline: true
-                        }
-                }
-        }
+        // stage('SonarQube Quality Gate') {
+        //     when { branch pattern: '^main*|^isaac*', comparator: 'REGEXP' }
+        //         environment {
+        //             scannerHome = tool 'SonarQubeScanner'
+        //         }
+        //         steps {
+        //             withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
+        //                 sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
+        //             }
+        //                 timeout(time: 3, unit: 'MINUTES') {
+        //                     waitForQualityGate abortPipeline: true
+        //                 }
+        //         }
+        // }
 
         stage('Terraform init & Dry Run') {
             steps {
