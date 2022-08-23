@@ -38,7 +38,6 @@ resource "aws_dynamodb_table" "k8s-terraform_locks" {
   }
 }
 
-
 # # terraform {
 # #   backend "s3" {
 # #     bucket         = "k8s-terraform-bucket"
