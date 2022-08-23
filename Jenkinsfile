@@ -67,13 +67,14 @@ pipeline {
         stage('Apply') {
             steps {
                 sh 'terraform apply -input=false tfplan'
-                post {
+            }
+        }
+
+        post {
                     always {
                         archiveArtifacts artifacts: 'tfplan.txt'
                     }
                 }
-            }
-        }
 
         stage('Destroy') {
             steps {
