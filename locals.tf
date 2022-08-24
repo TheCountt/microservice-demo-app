@@ -1,5 +1,5 @@
 # render Admin & Developer users list with the structure required by EKS module
-/* locals {
+locals {
   admin_user_map_users = [
     for admin_user in var.admin_users :
     {
@@ -7,7 +7,7 @@
       username = admin_user
       groups   = ["system:masters"]
     }
-  ] */
+  ] 
   /* developer_user_map_users = [
     for developer_user in var.developer_users :
     {
@@ -17,7 +17,7 @@
     }
   ] */
 
-  /* self_managed_node_groups = {
+  self_managed_node_groups = {
     worker_group1 = {
       name = "${var.cluster_name}-wg"
 
@@ -50,4 +50,4 @@
       }
     }
   }
-} */
+}

@@ -1,13 +1,13 @@
 # # Introducing Backend on S3 
-resource "aws_s3_bucket" "k8s-terraform_state" {
+/* resource "aws_s3_bucket" "k8s-terraform_state" {
   bucket = "k8s-terraform-bucket"
   acl    = "log-delivery-write"
   
   versioning {
-    enabled = true
+    enabled = true */
     /* mfa_delete = false */
-  }
-
+  /* } */
+/* 
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
@@ -15,20 +15,20 @@ resource "aws_s3_bucket" "k8s-terraform_state" {
       }
     }
   }
-}
+} */
 
 
-resource "aws_s3_bucket_public_access_block" "example-public-access-block" {
+/* resource "aws_s3_bucket_public_access_block" "example-public-access-block" {
   bucket = "k8s-terraform-bucket"
 
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
-}
+} */
 
 
-resource "aws_dynamodb_table" "k8s-terraform_locks" {
+/* resource "aws_dynamodb_table" "k8s-terraform_locks" {
   name         = "k8s-terraform-bucket-locks"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
@@ -36,7 +36,7 @@ resource "aws_dynamodb_table" "k8s-terraform_locks" {
     name = "LockID"
     type = "S"
   }
-}
+} */
 
 # # terraform {
 # #   backend "s3" {

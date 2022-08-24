@@ -1,7 +1,7 @@
 variable "region" {}
 
 # create some variables
-/* variable "cluster_name" {
+variable "cluster_name" {
   type        = string
   description = "EKS cluster name."
 }
@@ -30,14 +30,14 @@ variable "zone_offset" {
 variable "admin_users" {
   type        = list(string)
   description = "List of Kubernetes admins."
-} */
+}
 
 /* variable "developer_users" {
   type        = list(string)
   description = "List of Kubernetes developers."
 } */
 
-/* variable "asg_instance_types" {
+variable "asg_instance_types" {
   description = "List of EC2 instance machine types to be used in EKS."
 }
 variable "autoscaling_minimum_size_by_az" {
@@ -47,4 +47,4 @@ variable "autoscaling_minimum_size_by_az" {
 variable "autoscaling_maximum_size_by_az" {
   type        = number
   description = "Maximum number of EC2 instances to autoscale our EKS cluster on each AZ."
-} */
+}
