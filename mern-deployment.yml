@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mern-app-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mern-app-server
+    spec:
+      containers:
+        - name: multi
+          image: anpbucket/multistage-mern:prod
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "250Mi"
+            limits:
+              cpu: "1000m"
+              memory: "500Mi"
+          ports:
+            - containerPort: 3000
+              name: nodejs-port
+  selector:
+    matchLabels:
+      app: mern-app-server

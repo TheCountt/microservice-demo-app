@@ -1,4 +1,4 @@
-region                  = "us-west-1"
+region                  = "us-west-2"
 cluster_name            = "app-eks"
 iac_environment_tag     = "development"
 name_prefix             = "isaac-eks"
