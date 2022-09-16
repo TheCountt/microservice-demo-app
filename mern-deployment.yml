@@ -12,6 +12,10 @@ spec:
       containers:
         - name: multi
           image: anpbucket/multistage-mern:prod
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
           resources:
             requests:
               cpu: "500m"
@@ -22,6 +26,11 @@ spec:
           ports:
             - containerPort: 3000
               name: nodejs-port
+      volumes:
+        - name: config
+          configMap:
+            name: env
+          
   selector:
     matchLabels:
       app: mern-app-server
