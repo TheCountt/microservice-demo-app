@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: mern-app-service
 spec:
-  ports:
-    - port: 3000
-      protocol: TCP
-      targetPort: http-port
+  type: LoadBalancer
   selector:
     app: mern-app-server
-  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8084
+      targetPort: 8084

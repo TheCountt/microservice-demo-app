@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mern-app-server
+  name: mern-app-deployment
 spec:
   selector:
     matchLabels:
@@ -12,9 +12,17 @@ spec:
       labels:
         app: mern-app-server
     spec:
+      volumes:
+        - name: config
+          configMap:
+            name: my-config
       containers:
         - name: multi
           image: anpbucket/multistage-mern:prod
+          volumeMounts:
+            - name: config
+              mountPath: /usr/src/app
+              readOnly: true
           resources:
             requests:
               cpu: "500m"
@@ -23,8 +31,10 @@ spec:
               cpu: "1000m"
               memory: "500Mi"
           ports:
-            - containerPort: 80
+            - containerPort: 3000
               name: nodejs-port
-          envFrom:
-            - configMapRef:
-                name: my-config
+          # envFrom:
+          #   - configMapRef:
+          #       name: my-config
+    
+          

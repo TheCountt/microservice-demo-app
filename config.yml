@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+data:
+  DB: "mongodb://192.168.0.54:27017"
+  WEB_ORIGIN: "http://client:3000"
