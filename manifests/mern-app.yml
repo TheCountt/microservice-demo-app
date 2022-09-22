@@ -41,7 +41,6 @@ spec:
               memory: "500Mi"
           ports:
             - containerPort: 3000
-              name: nodejs-port
           envFrom:
             - configMapRef:
                 name: my-config

@@ -1,26 +1,26 @@
 /* groovylint-disable GStringExpressionWithinString, NestedBlockDepth */
-pipeline {
-    agent any
-    tools {
-        terraform 'terraform'
-    }
+// pipeline {
+//     agent any
+//     tools {
+//         terraform 'terraform'
+//     }
 
-    options {
-        timestamps()
-        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '4')
-    }
+//     options {
+//         timestamps()
+//         buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '4')
+//     }
 
-    parameters {
-        string(name: 'variables', defaultValue: 'terraform.auto.tfvars', description: 'variables file to use for deployment')
-        // booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
-    }
+//     parameters {
+//         string(name: 'variables', defaultValue: 'terraform.auto.tfvars', description: 'variables file to use for deployment')
+//         // booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
+//     }
 
-    stages {
-        stage('Git checkout') {
-            steps {
-                git branch: 'main', credentialsId: 'local-exec', url: 'https://github.com/TheCountt/microservice-demo-app.git'
-            }
-        }
+//     stages {
+//         stage('Git checkout') {
+//             steps {
+//                 git branch: 'main', credentialsId: 'local-exec', url: 'https://github.com/TheCountt/microservice-demo-app.git'
+//             }
+//         }
 
         // stage('SonarQube Quality Gate') {
         //     when { branch pattern: '^main*|^isaac*', comparator: 'REGEXP' }
@@ -83,10 +83,10 @@ pipeline {
         //     }
         // }
 
-        stage('Destroy') {
-            steps {
-                sh 'terraform destroy -auto-approve'
-            }
-        }
-    }
-}
+//         stage('Destroy') {
+//             steps {
+//                 sh 'terraform destroy -auto-approve'
+//             }
+//         }
+//     }
+// }
