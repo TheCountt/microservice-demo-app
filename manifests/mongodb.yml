@@ -18,3 +18,19 @@ spec:
       ports:
         - containerPort: 27017
           protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: mongodb-server
+  ports:
+  - port: 27017
+    protocol: TCP
+    targetPort: 27017
+

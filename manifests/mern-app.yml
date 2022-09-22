@@ -1,7 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mern-app-service
+  labels:
+    app: mern-app-server
+spec:
+  type: LoadBalancer
+  selector:
+    app: mern-app-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mern-app-server
+  name: mern-app-deployment
 spec:
   selector:
     matchLabels:
@@ -23,8 +40,9 @@ spec:
               cpu: "1000m"
               memory: "500Mi"
           ports:
-            - containerPort: 80
+            - containerPort: 3000
               name: nodejs-port
           envFrom:
             - configMapRef:
                 name: my-config
+          imagePullPolicy: Always
