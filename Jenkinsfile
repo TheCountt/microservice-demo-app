@@ -64,14 +64,14 @@ pipeline {
         //     }
         // }
 
-        stage('Apply') {
-            steps {
-                // sh 'terraform apply -input=false tfplan'
-                sh 'terraform init'
-                sh "terraform plan --var-file=${params.variables}"
-                sh 'terraform apply -auto-approve'
-            }
-        }
+        // stage('Apply') {
+        //     steps {
+        //         // sh 'terraform apply -input=false tfplan'
+        //         sh 'terraform init'
+        //         sh "terraform plan --var-file=${params.variables}"
+        //         sh 'terraform apply -auto-approve'
+        //     }
+        // }
 
         // stage('Post') {
         //     steps {

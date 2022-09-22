@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: my-config
 data:
-  DB: "mongodb://192.168.75.205:27017"
+  DB: "mongodb://192.168.54.246:27017"
   WEB_ORIGIN: "http://client:3000"
