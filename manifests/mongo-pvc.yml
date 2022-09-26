@@ -3,10 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: mongo-pvc
 spec:
-  storageClassName: gp3
+  storageClassName: gp2
   accessModes:
-    - ReadWriteOnce 
-  volumeName: mongo-pv
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
