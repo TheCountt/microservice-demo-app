@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+spec:
+  selector:
+    matchLabels:
+      app: mongodb-server2
+  serviceName: "mongo"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongodb-server2
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: mongodb-server2
+        image: anpbucket/mongo-with-check:3.6
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongo-vol
+          mountPath: /data/db
+        # env:
+        #   - name: MYSQL_ROOT_PASSWORD
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: mysql-password
+        #         key: MYSQL_ROOT_PASSWORD
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-vol
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "mine"
+      resources:
+        requests:
+          storage: 2Gi
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-svc2
+  labels:
+    app: mongodb-server2
+spec:
+  clusterIP: None #Headless service which is why we have ClusterIP as none
+  selector:
+    app: mongodb-server2
+  ports:
+  - port: 27017
+    protocol: TCP
