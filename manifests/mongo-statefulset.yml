@@ -23,11 +23,30 @@ spec:
         - name: mongo-vol
           mountPath: /data/db
         # env:
-        #   - name: MYSQL_ROOT_PASSWORD
+        #   - name: ME_CONFIG_MONGODB_ENABLE_ADMIN
+        #     value: "true"
+        #   - name: MONGO_INITDB_ROOT_USERNAME
         #     valueFrom:
         #       secretKeyRef:
-        #         name: mysql-password
-        #         key: MYSQL_ROOT_PASSWORD
+        #         name: database-creds
+        #         key: username
+        #   - name: MONGO_INITDB_ROOT_PASSWORD
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: database-creds
+        #         key: password
+        #   - name: MONGO_USERNAME
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: database-creds
+        #         key: mongo_username
+        #   - name: MONGO_PASSWORD
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: database-creds
+        #         key: mongo_password
+
+  
   volumeClaimTemplates:
   - metadata:
       name: mongo-vol

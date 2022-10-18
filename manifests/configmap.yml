@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: my-config
 data:
-  # DB: "mongodb://192.168.78.119:27017"
-  DB: "mongo.default.svc.cluster.local"
+  DB: "mongodb://192.168.25.21:27017"
+  # DB: "mongodb://mongo.default.svc.cluster.local:27017"
   WEB_ORIGIN: "http://client:3000"
   DANGEROUSLY_DISABLE_HOST_CHECK: "true"
