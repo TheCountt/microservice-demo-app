@@ -32,10 +32,10 @@ variable "admin_users" {
   description = "List of Kubernetes admins."
 }
 
-/* variable "developer_users" {
+variable "developer_users" {
   type        = list(string)
   description = "List of Kubernetes developers."
-} */
+}
 
 variable "asg_instance_types" {
   description = "List of EC2 instance machine types to be used in EKS."

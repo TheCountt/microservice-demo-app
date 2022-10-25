@@ -1,13 +1,13 @@
 # # Introducing Backend on S3 
-/* resource "aws_s3_bucket" "k8s-terraform_state" {
-  bucket = "k8s-terraform-bucket"
+resource "aws_s3_bucket" "k8s-terraform_state1" {
+  bucket = "k8s-terraform-bucket2"
   acl    = "log-delivery-write"
   
   versioning {
-    enabled = true */
-    /* mfa_delete = false */
-  /* } */
-/* 
+    enabled = true
+    # mfa_delete = false
+     }
+
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
@@ -15,7 +15,7 @@
       }
     }
   }
-} */
+}
 
 
 /* resource "aws_s3_bucket_public_access_block" "example-public-access-block" {
@@ -27,8 +27,7 @@
   restrict_public_buckets = true
 } */
 
-
-/* resource "aws_dynamodb_table" "k8s-terraform_locks" {
+resource "aws_dynamodb_table" "k8s-terraform_locks" {
   name         = "k8s-terraform-bucket-locks"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
@@ -36,14 +35,14 @@
     name = "LockID"
     type = "S"
   }
-} */
+}
 
-# # terraform {
-# #   backend "s3" {
-# #     bucket         = "k8s-terraform-bucket"
-# #     key            = "global/s3/terraform.tfstate"
-# #     region         = "us-west-1"
-# #     dynamodb_table = "k8s-terraform-bucket-locks"
-# #     encrypt        = true
-# #   }
-# # }
+ terraform {
+   backend "s3" {
+     bucket         = "k8s-terraform-bucket2"
+     key            = "global/s3/terraform.tfstate"
+     region         = "us-west-1"
+     dynamodb_table = "k8s-terraform-bucket-locks"
+    encrypt        = true
+   }
+ }

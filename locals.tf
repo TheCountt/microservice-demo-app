@@ -8,14 +8,14 @@ locals {
       groups   = ["system:masters"]
     }
   ] 
-  /* developer_user_map_users = [
+  developer_user_map_users = [
     for developer_user in var.developer_users :
     {
       userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${developer_user}"
       username = developer_user
       groups   = ["${var.name_prefix}-developers"]
     }
-  ] */
+  ]
 
   self_managed_node_groups = {
     worker_group1 = {

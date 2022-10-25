@@ -18,8 +18,8 @@ module "eks_cluster" {
   # aws-auth configmap
   create_aws_auth_configmap = true
   manage_aws_auth_configmap = true
-  aws_auth_users            = local.admin_user_map_users
-  /* aws_auth_users = concat(local.admin_user_map_users, local.developer_user_map_users) */
+  /* aws_auth_users            = local.admin_user_map_users */
+  aws_auth_users = concat(local.admin_user_map_users, local.developer_user_map_users)
   tags = {
     Environment = "prod"
     Terraform   = "true"

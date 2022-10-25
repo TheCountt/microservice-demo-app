@@ -1,0 +1,43 @@
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: development
+  name: dev-roles
+rules:
+- apiGroups: [""]
+  resources: 
+      - "configmaps"
+      - "cronjobs"
+      - "deployments"
+      - "events"
+      - "ingresses"
+      - "jobs"
+      - "pods"
+      - "pods/attach"
+      - "pods/exec"
+      - "pods/log"
+      - "pods/portforward"
+      - "secrets"
+      - "services"
+  verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: development
+  name: dev-roles-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: dev-roles
+subjects:
+- kind: Group
+  apiGroup: rbac.authorization.k8s.io
+  name: isaac-eks-developers
+
+# - kind: User
+#   apiGroup: rbac.authorization.k8s.io
+#   name: alice 
