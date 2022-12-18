@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: "www.ultimatetodo.cf"
+  - host: "prometheus.machalan.tk"
     http:
       paths:
       - pathType: Prefix

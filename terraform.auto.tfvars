@@ -11,4 +11,4 @@ admin_users = ["susan", "ashnelson"]
 developer_users                = ["pat", "ren"]
 asg_instance_types             = [{ instance_type = "t3.micro" }, { instance_type = "t3.medium" } ]
 autoscaling_minimum_size_by_az = 3
-autoscaling_maximum_size_by_az = 10
+autoscaling_maximum_size_by_az = 5

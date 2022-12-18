@@ -42,7 +42,6 @@ Statefulset object is best to run stateful applications such as databases,etc.
 
 - Make sure you have already have a domain name(You can buy from any domain registrar)
 
-
 - Create an Ingress Controller. You can research on the best one( nginx ingress controller was used here)
 
 **Note: If you have a ValidatingWebhookConfiguration blocker, delete the webhook(kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission)**
